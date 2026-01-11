@@ -131,16 +131,16 @@ export function make_actor_enemy(position: Position, difficulty: Difficulty): Ac
           const dx = playerPos.x - a.location.x;
           const dy = playerPos.y - a.location.y;
 
-          if (dx === 0 || dy === 0) {
-            const dir = dx !== 0
-              ? { x: dx > 0 ? 1 : -1, y: 0 }
-              : { x: 0, y: dy > 0 ? 1 : -1 };
 
-            const bullet = make_actor_bullet(position_add(a.location, dir), dir);
-            const clone = base_actor(a.location, a.health, a.name, a.actions);
-            clone.outbox.push({ key: "spawn", params: bullet });
-            return clone;
-          }
+          if (dx === 0 || dy === 0) {
+            if (Math.random() < 0.5) { 
+                const dir = dx !== 0 ? { x: dx > 0 ? 1 : -1, y: 0 } : { x: 0, y: dy > 0 ? 1 : -1 };
+                const bullet = make_actor_bullet(position_add(a.location, dir), dir);
+                const clone = base_actor(a.location, a.health, a.name, a.actions);
+                clone.outbox.push({ key: "spawn", params: bullet });
+                return clone;
+            }
+    }
         }
       }
 

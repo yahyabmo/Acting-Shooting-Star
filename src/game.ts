@@ -1,5 +1,5 @@
 import type { World } from "./worlds.js";
-import { snapshot_ascii, render, createRenderer } from "./view.js";
+import { snapshot_ascii, render, createRenderer, draw_menu } from "./view.js";
 import { make_world, add_actor, tick_world } from "./worlds.js";
 import {
   make_actor_player,
@@ -293,6 +293,11 @@ export function game_tick(state: GameState): GameState {
   const scoreGain    = Math.max(0, enemiesBefore - enemiesAfter) * 10;
   const newScore     = state.score + scoreGain;
 
+  let newDifficulty = state.difficulty;
+  if (newScore >= 1000) newDifficulty = 3;
+  else if (newScore >= 300) newDifficulty = 2;
+
+  state.difficulty = newDifficulty;
  /*───────────────────────────
   5. Génération / rétrécissement du couloir
 ───────────────────────────*/
@@ -373,29 +378,36 @@ createWallLine(0, newLeftGap, gapWidth, width).forEach(wall => {
 
 
 function run(): void {
-  let state = initial_state();
+  const renderer = createRenderer();
 
-  setup_keyboard((key: string) => {
-    state = handle_key(state, key);
-  });
-
-  const interval = setInterval(() => {
-    state = game_tick(state);
-
-    const player = state.world.actors.find(a => a.name === "player");
-    if (!player || state.tick > 5000) {
-      clearInterval(interval);
-      const term = state.renderer.term;
-      term.moveTo(2, state.height + 3);
-      term[state.tick > 500 ? "green" : "red"](state.tick > 5000 ? "Fin de la simulation." : "Game Over. Appuyez sur une touche pour quitter...");
-      term.grabInput(true);
-      term.on("key", () => {
-        term.hideCursor(false);
-        term.clear();
+  const start = () => {
+    draw_menu(renderer, (choice: number) => {
+      if (choice === 1) {
+        renderer.term.clear();
         process.exit();
+      }
+
+      renderer.term.clear();
+      let state = initial_state();
+      
+      setup_keyboard((key: string) => {
+        state = handle_key(state, key);
       });
-    }
-  }, 50);
+
+      const interval = setInterval(() => {
+        state = game_tick(state);
+
+        const player = state.world.actors.find(a => a.name === "player");
+        if (!player) {
+          clearInterval(interval);
+          renderer.term.moveTo(Math.floor(state.width / 2) - 5, Math.floor(state.height / 2)).red.bold(" MISSION ÉCHOUÉE ");
+          setTimeout(() => start(), 3000); 
+        }
+      }, 50);
+    });
+  };
+
+  start();
 }
 
 run();
