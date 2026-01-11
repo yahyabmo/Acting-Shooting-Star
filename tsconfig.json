@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "module": "es2022",
+        "target": "es2022",
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "strict": true,
+        "alwaysStrict": true,
+        "allowJs": true,
+        "checkJs": true,
+        "declaration": true,
+        "forceConsistentCasingInFileNames": true,
+        "rootDir": ".",
+        "outDir": "./dist",
+        "preserveConstEnums": true,
+        "importHelpers": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "moduleResolution": "node",
+        "types": ["node", "jest"],
+        "paths": {
+            "#src/*": [ "./src/*" ]
+        }
+    },
+    "include": [
+        "src/**/*.ts"
+    ]
+}

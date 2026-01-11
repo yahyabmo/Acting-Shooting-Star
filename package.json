@@ -1,0 +1,31 @@
+{
+    "name": "shootingactors",
+    "version": "1.0.0",
+    "description": "",
+    "source": "html/actors.html",
+    "scripts": {
+        "build": "echo preferably add your own scripts in the Makefile"
+    },
+    "type": "module",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "imports": {
+        "#src/*": "./dist/src/*",
+        "#test/*": "./dist/test/*"
+    },
+    "dependencies": {
+        "@types/jest": "^29.5.14",
+        "@types/node": "^22.13.4",
+        "@types/terminal-kit": "^2.5.7",
+        "@typescript-eslint/eslint-plugin": "^8.24.1",
+        "@typescript-eslint/parser": "^8.24.1",
+        "eslint": "9.20",
+        "jest": "^29.7.0",
+        "terminal-kit": "^3.1.2",
+        "ts-jest": "^29.2.5",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.24.1"
+    }
+}
